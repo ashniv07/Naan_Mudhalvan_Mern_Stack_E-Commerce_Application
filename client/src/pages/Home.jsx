@@ -1,76 +1,61 @@
-import React, { useEffect, useState } from 'react'
-import '../styles/Home.css'
-import HomeBanner from '../images/home-banner-2.png'
-import Products from '../components/Products'
-import Footer from '../components/Footer'
-import FlashSale from '../components/FlashSale'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import '../styles/Home.css';
+import Products from '../components/Products';
+import Footer from '../components/Footer';
+import FlashSale from '../components/FlashSale';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Home = () => {
-
   const navigate = useNavigate();
-
   const [bannerImg, setBannerImg] = useState();
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchBanner();
-  }, [])
+  }, []);
 
-  const fetchBanner = async() =>{
-    await axios.get('http://localhost:6001/fetch-banner').then(
-      (response)=>{
-        setBannerImg(response.data);
-      }
-    )
-  }
+  const fetchBanner = async () => {
+    await axios.get('http://localhost:6001/fetch-banner').then((response) => {
+      setBannerImg(response.data);
+    });
+  };
 
   return (
     <div className="HomePage">
       <div className="home-banner">
-        {bannerImg ?
-          <img src={bannerImg} alt="" />
-        :
-        ""}
+        {bannerImg ? <img src={bannerImg} alt="Banner" /> : ""}
       </div>
 
       <div className="home-categories-container">
-
-        <div className="home-category-card" onClick={()=>navigate('/category/Fashion')}>
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZQjXpWVVQhkT_A2n03XMo2KDV4yPSLBcoNA&usqp=CAU" alt="" />
-          <h5>Fashion</h5>
-        </div>
-
-        <div className="home-category-card" onClick={()=>navigate('/category/Electronics')}>
-          <img src="https://5.imimg.com/data5/ANDROID/Default/2023/1/SE/QC/NG/63182719/product-jpeg-500x500.jpg" alt="" />
-          <h5>Electronics</h5>
-        </div>
-
-        <div className="home-category-card" onClick={()=>navigate('/category/mobiles')}>
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3jUW7v1WFJL9Ylax9a4vazyKXwG-ktSinI4Rd7qi7MkhMr79UlIyyrNkbiK0Cz5u6WYw&usqp=CAU" alt="" />
-          <h5>Mobiles</h5>
-        </div>
-
-        <div className="home-category-card" onClick={()=>navigate('/category/Groceries')}>
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXbpV_yQ_zCtZt_1kNebjvFqXvdDnLuuJPsQ&usqp=CAU" alt="" />
-          <h5>Groceries</h5>
-        </div>
-
-        <div className="home-category-card" onClick={()=>navigate('/category/Sports-Equipment')}>
-          <img src="https://a.storyblok.com/f/112937/568x464/82f66c3a21/all_the_english-_football_terms_you_need_to_know_blog-hero-low.jpg/m/620x0/filters:quality(70)/" alt="" />
-          <h5>Sports Equipments</h5>
-        </div>
-
+        {[
+          { name: 'Fashion', img: 'https://files.cdn.printful.com/o/upload/blog-post-img-upload/cc/cc5379ede867baff5a4b2fd9dcb968a2_l', path: '/category/Fashion' },
+          { name: 'Electronics', img: 'https://5.imimg.com/data5/ANDROID/Default/2023/1/SE/QC/NG/63182719/product-jpeg-500x500.jpg', path: '/category/Electronics' },
+          { name: 'Mobiles', img: 'https://www.top10mobileshop.com/images/top10mobiles.com/product/2024/08/962146925202408060916.jpg', path: '/category/Mobiles' },
+          { name: 'Groceries', img: 'https://hips.hearstapps.com/hmg-prod/images/09dce7b7-ea40-406b-a2c0-a3f57c420b17-1657946362.jpeg?crop=0.660xw:1.00xh;0.0794xw,0&resize=1200:*', path: '/category/Groceries' },
+          { name: 'Sports Equipment', img: 'https://images.livemint.com/img/2024/07/29/600x338/sports_equipment_1722242678912_1722242702955.jpg', path: '/category/Sports-Equipment' },
+        ].map((category, idx) => (
+          <div
+            className="home-category-card"
+            key={idx}
+            onClick={() => navigate(category.path)}
+          >
+            <img src={category.img} alt={category.name} />
+            <h5>{category.name}</h5>
+          </div>
+        ))}
       </div>
 
+      <div className="flash-sale">
+        <FlashSale />
+      </div>
 
-      <div id='products-body'></div>
-      <Products category = 'all'  />
-
+      <div id="products-body">
+        <Products category="all" />
+      </div>
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
