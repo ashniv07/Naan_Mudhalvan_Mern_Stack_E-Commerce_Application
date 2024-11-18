@@ -144,6 +144,17 @@ mongoose.connect('mongodb://localhost:27017/shopEZ',{
         }
     })
 
+    //fetch flash sale products
+    app.get('/flash-sale-products', async (req, res) => {
+        try {
+          const products = await Product.find().sort({ discount: -1 }).limit(10); // Sort by discount in descending order
+          res.json(products);
+        } catch (error) {
+          console.error('Error fetching flash sale products:', error);
+          res.status(500).send('Server Error');
+        }
+      })
+
 
     // Add new product
 
